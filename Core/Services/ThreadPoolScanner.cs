@@ -13,9 +13,13 @@ namespace Core.Services
 	{
 		public const int MaxThreads = 5;
 		private readonly Semaphore _semaphore;
+		private int count = MaxThreads;
+		private bool scannerStarted;
 		private Thread _queueHandler;
 		private readonly ConcurrentQueue<TaskInfo> _taskQueue;
 		private readonly CancellationTokenSource _tokenSource;
+
+		public bool IsFinished => _taskQueue.IsEmpty && count == MaxThreads && !scannerStarted;
 
 		public ThreadPoolScanner()
 		{
@@ -26,12 +30,15 @@ namespace Core.Services
 
 		public void StartScanner()
 		{
+			count = MaxThreads;
+			scannerStarted = true;
 			_queueHandler = new Thread(QueueHandler);
 			_queueHandler.Start(_tokenSource.Token);
 		}
 
 		public void AddTask(Action<FileScanData> task, FileScanData scanData)
 		{
+			scannerStarted = false;
 			var info = new TaskInfo
 			{
 				Task = task,
@@ -47,11 +54,13 @@ namespace Core.Services
 
 			while (!token.IsCancellationRequested)
 			{
+				Console.WriteLine($"\n5) Counter = {count}\n");
 				if (_taskQueue.IsEmpty)
 					continue;
 
 				_semaphore.WaitOne();
-
+				count--;
+				
 				_taskQueue.TryDequeue(out var taskInfo);
 
 				ThreadPool.QueueUserWorkItem(TaskWrapper, taskInfo, true);
@@ -68,7 +77,9 @@ namespace Core.Services
 			{
 				Console.WriteLine("Error: " + data.TaskData.FileName + data.TaskData.ParentId);
 			}
+			count++;
 			_semaphore.Release();
+			
 		}
 
 		public void StopScanner()

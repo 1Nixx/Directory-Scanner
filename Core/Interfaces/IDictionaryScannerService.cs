@@ -9,7 +9,7 @@ namespace Core.Interfaces
 {
 	public interface IDictionaryScannerService
 	{
-		public bool IsFinished { get; set; }
+		public bool IsFinished { get; }
 		void StartScan(string startDir);
 		void StopScan();
 		TreeNode GetResult();

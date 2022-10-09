@@ -20,7 +20,7 @@ namespace Core.Services
 			_threadPoolScanner = new ThreadPoolScanner();
 		}
 
-		public bool IsFinished { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		public bool IsFinished => _threadPoolScanner.IsFinished;
 
 		public TreeNode GetResult()
 		{
@@ -39,7 +39,6 @@ namespace Core.Services
 
 			_threadPoolScanner.AddTask(ScanFile, scanData);
 		}
-		private object obj = new();
 
 		private void ScanFile(FileScanData data)
 		{

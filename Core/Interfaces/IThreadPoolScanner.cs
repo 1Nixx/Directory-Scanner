@@ -9,6 +9,7 @@ namespace Core.Interfaces
 {
     internal interface IThreadPoolScanner
     {
+        bool IsFinished { get; }
         void StartScanner();
         void AddTask(Action<FileScanData> task, FileScanData scanData);
         void StopScanner();
