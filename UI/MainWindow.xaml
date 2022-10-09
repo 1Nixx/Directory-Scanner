@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="MainWindow" Height="550" Width="400">
+    <StackPanel>
+        <StackPanel Height="57" HorizontalAlignment="Center" Background="AliceBlue" Width="400">
+            <Button Width="87" Margin="5 5 5 5">Choose File</Button>
+            <TextBlock HorizontalAlignment="Center" >ghjkldfghjkldfghjkdfghjksdfghjsdfghj</TextBlock>
+        </StackPanel>
+        <TreeView FontSize="17">
+            <TreeViewItem  Header="asdasd">
+                <TextBlock TextAlignment="Justify">
+                    
+                    asdasd
+                </TextBlock>
+                <TextBlock>asdasd</TextBlock>
+            </TreeViewItem>
+        </TreeView>
+    </StackPanel>
 </Window>
