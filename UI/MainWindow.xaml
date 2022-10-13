@@ -9,20 +9,26 @@
     <StackPanel>
         <StackPanel Height="57" HorizontalAlignment="Center" Background="AliceBlue" Width="400">
             <TextBlock HorizontalAlignment="Center" Margin="5">
-                <Button Width="88" Content="Start scan" IsCancel="{Binding IsSearchEnabled}" IsEnabled="{Binding IsFileChosen}" Command="{Binding StartSearch}"/>
+                <Button Width="88" Content="Start scan" IsEnabled="{Binding IsStartEnable}" Command="{Binding StartSearch}"/>
                 <Button Width="88" Content="Choose File" IsCancel="{Binding IsSearchEnabled}" Command="{Binding ChooseFile}"/>
                 <Button Width="88" Content="Stop scan" IsEnabled="{Binding IsSearchEnabled}" Command="{Binding StopScan}"/>
             </TextBlock>
             <TextBlock HorizontalAlignment="Center" Text="{Binding FilePath}"></TextBlock>
         </StackPanel>
-        <TreeView FontSize="17">
-            <TreeViewItem  Header="asdasd">
-                <TextBlock TextAlignment="Justify">
-                    
-                    asdasd
-                </TextBlock>
-                <TextBlock>asdasd</TextBlock>
-            </TreeViewItem>
+        <TreeView FontSize="17" x:Name="tvFile" ItemsSource="{Binding TreeViewList}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=TreeViewNodes}">
+                    <DockPanel>
+                        <Image Height="25" Width="25" Source="{Binding PhotoPath}"/>
+                        <TextBlock VerticalAlignment="center" Text ="{Binding FileName}"/>
+                        <TextBlock Text ="("/>
+                        <TextBlock Text ="{Binding FileSize}"/>
+                        <TextBlock Text =", "/>
+                        <TextBlock Text ="{Binding PercentFileSize}"/>
+                        <TextBlock Text ="%)"/>
+                    </DockPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
     </StackPanel>
 </Window>

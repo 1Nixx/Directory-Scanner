@@ -19,7 +19,7 @@ namespace Core.Services
 		private readonly ConcurrentQueue<TaskInfo> _taskQueue;
 		private readonly CancellationTokenSource _tokenSource;
 
-		public bool IsFinished => _taskQueue.IsEmpty && count == MaxThreads && !scannerStarted;
+		public bool IsFinished => (_taskQueue.IsEmpty && count == MaxThreads && !scannerStarted) || _tokenSource.Token.IsCancellationRequested;
 
 		public ThreadPoolScanner()
 		{
@@ -68,9 +68,20 @@ namespace Core.Services
 
 		private void TaskWrapper(TaskInfo data)
 		{
-			data.Task(data.TaskData);
-			count++;
-			_semaphore.Release();		
+			try
+			{
+				data.Task(data.TaskData);
+
+			}
+			catch (Exception)
+			{
+				Console.WriteLine("Errrorooror");
+			}
+			finally
+			{
+				count++;
+				_semaphore.Release();
+			}
 		}
 
 		public void StopScanner()

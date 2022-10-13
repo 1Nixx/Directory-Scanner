@@ -3,8 +3,26 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="resources\file.png" />
+    <None Remove="resources\folder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\file.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\folder.png" />
+  </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Core.Interfaces;
+using Core.Models;
+using Core.Services;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace UI.VM
 {
@@ -19,6 +21,7 @@ namespace UI.VM
 			set
 			{
 				_isSearchEnabled = value;
+				OnPropertyChanged("IsStartEnable");
 				OnPropertyChanged("IsSearchEnabled");
 			}
 		}
@@ -33,7 +36,16 @@ namespace UI.VM
 			set
 			{
 				_isFileChosen = value;
+				OnPropertyChanged("IsStartEnable");
 				OnPropertyChanged("IsFileChosen");
+			}
+		}
+
+		public bool IsStartEnable
+		{
+			get
+			{
+				return IsFileChosen && !IsSearchEnabled;
 			}
 		}
 
@@ -51,7 +63,39 @@ namespace UI.VM
 			}
 		}
 
+		private IDictionaryScannerService _dictionaryScannerService;
+		private Task _scanTask;
 
+		private ObservableCollection<TreeViewNode> _treeNodes;
+		public ObservableCollection<TreeViewNode> TreeViewList
+		{
+			get
+			{
+				return _treeNodes;
+			}
+			set { 
+				_treeNodes = value; 
+			}
+		}
+
+
+		private Core.Models.TreeNode _treeResult;
+		public Core.Models.TreeNode TreeResult
+		{
+			set
+			{
+				if (value != null)
+				{
+					_treeResult = value;
+
+					_treeNodes = new ObservableCollection<TreeViewNode>();
+					_treeNodes.Add(value.ToTreeViewNode());
+					OnPropertyChanged("TreeViewList");
+				}
+				
+				OnPropertyChanged("TreeResult");
+			}
+		}
 
 
 
@@ -62,8 +106,54 @@ namespace UI.VM
 			{
 				return _chooseFile ??= new RelayCommand(obj =>
 				{
-					FilePath = "asffdsf";
-					IsFileChosen = true;
+					using var dialog = new FolderBrowserDialog();
+
+					if( dialog.ShowDialog() == DialogResult.OK)
+					{
+						FilePath = dialog.SelectedPath;
+						IsFileChosen = true;
+					}
+				});
+			}
+		}
+
+		
+
+		private RelayCommand _startSearch;
+		public RelayCommand StartSearch
+		{
+			get
+			{
+				return _startSearch ??= new RelayCommand(obj =>
+				{
+					_dictionaryScannerService = new DictionaryScannerService();
+					
+					_scanTask = Task.Run(() =>
+					{
+						IsSearchEnabled = true;
+						_dictionaryScannerService.StartScan(FilePath);
+
+						while (!_dictionaryScannerService.IsFinished){}
+
+						_dictionaryScannerService.StopScan();
+						var result = _dictionaryScannerService.GetResult();
+
+						IsSearchEnabled = false;
+
+						TreeResult = result;
+					});
+				});
+			}
+		}
+
+		private RelayCommand _stopScan;
+		public RelayCommand StopScan
+		{
+			get
+			{
+				return _stopScan ??= new RelayCommand(obj =>
+				{
+					_dictionaryScannerService?.StopScan();
 				});
 			}
 		}

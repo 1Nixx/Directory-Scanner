@@ -20,7 +20,7 @@ namespace Core.Models
 		public double PercentFileSize { get; set; }
 
 		public TreeNode? Parent { get; set; }
-		public ConcurrentBag<TreeNode>? Clildrens { get; set; }
+		public ConcurrentBag<TreeNode>? Childrens { get; set; }
 
 		private string GetRoute()
 		{

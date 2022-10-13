@@ -37,8 +37,8 @@ namespace Core.Repositories
 
                     newNode.Parent = parentNode;
 
-                    parentNode.Clildrens ??= new ConcurrentBag<TreeNode>();
-                    parentNode.Clildrens.Add(newNode);
+                    parentNode.Childrens ??= new ConcurrentBag<TreeNode>();
+                    parentNode.Childrens.Add(newNode);
                 }
             }
 

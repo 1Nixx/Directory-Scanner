@@ -19,9 +19,9 @@ namespace Core.Services
 		private static long GetChildFileSize(TreeNode node)
 		{
 			long size = 0;
-			if (node.Clildrens != null)
+			if (node.Childrens != null)
 			{
-				foreach (var child in node.Clildrens)
+				foreach (var child in node.Childrens)
 				{
 					RecalculateFileSizes(child);
 					size += child.FileSize.Value;
@@ -39,8 +39,8 @@ namespace Core.Services
 
 			node.PercentFileSize = (double)node.FileSize.Value / div * 100;
 
-			if (node.Clildrens != null)
-				foreach (var child in node.Clildrens)
+			if (node.Childrens != null)
+				foreach (var child in node.Childrens)
 					RecalculatePercentFileSize(child);
 		}
 	}
