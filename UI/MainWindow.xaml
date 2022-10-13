@@ -8,8 +8,12 @@
         Title="MainWindow" Height="550" Width="400">
     <StackPanel>
         <StackPanel Height="57" HorizontalAlignment="Center" Background="AliceBlue" Width="400">
-            <Button Width="87" Margin="5 5 5 5">Choose File</Button>
-            <TextBlock HorizontalAlignment="Center" >ghjkldfghjkldfghjkdfghjksdfghjsdfghj</TextBlock>
+            <TextBlock HorizontalAlignment="Center" Margin="5">
+                <Button Width="88" Content="Start scan" IsCancel="{Binding IsSearchEnabled}" IsEnabled="{Binding IsFileChosen}" Command="{Binding StartSearch}"/>
+                <Button Width="88" Content="Choose File" IsCancel="{Binding IsSearchEnabled}" Command="{Binding ChooseFile}"/>
+                <Button Width="88" Content="Stop scan" IsEnabled="{Binding IsSearchEnabled}" Command="{Binding StopScan}"/>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Center" Text="{Binding FilePath}"></TextBlock>
         </StackPanel>
         <TreeView FontSize="17">
             <TreeViewItem  Header="asdasd">

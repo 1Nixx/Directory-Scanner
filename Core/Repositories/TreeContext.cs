@@ -22,8 +22,6 @@ namespace Core.Repositories
 
 			RootNode ??= node;
 			var res = IdToNodeDict.TryAdd(node.Id, node);
-
-			Console.WriteLine($"\n3) Node: {node.Id} ResAdd: {res} ParentId: {node.Parent?.Id}\n");
 		}
 
 		public TreeNode? Find(int id)

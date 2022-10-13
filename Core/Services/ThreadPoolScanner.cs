@@ -54,7 +54,6 @@ namespace Core.Services
 
 			while (!token.IsCancellationRequested)
 			{
-				Console.WriteLine($"\n5) Counter = {count}\n");
 				if (_taskQueue.IsEmpty)
 					continue;
 
@@ -69,17 +68,9 @@ namespace Core.Services
 
 		private void TaskWrapper(TaskInfo data)
 		{
-			try
-			{
-				data.Task(data.TaskData);
-
-			} catch (Exception ex)
-			{
-				Console.WriteLine("Error: " + data.TaskData.FileName + data.TaskData.ParentId);
-			}
+			data.Task(data.TaskData);
 			count++;
-			_semaphore.Release();
-			
+			_semaphore.Release();		
 		}
 
 		public void StopScanner()

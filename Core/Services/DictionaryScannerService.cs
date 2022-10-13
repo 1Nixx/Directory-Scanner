@@ -24,7 +24,10 @@ namespace Core.Services
 
 		public TreeNode GetResult()
 		{
-			return _fileTreeRepository.GetRootNode();
+			var rootNode = _fileTreeRepository.GetRootNode();
+			FileTreeHelper.RecalculateFileSizes(rootNode);
+			FileTreeHelper.RecalculatePercentFileSize(rootNode);
+			return rootNode;
 		}
 
 		public void StartScan(string startDir)
@@ -69,8 +72,6 @@ namespace Core.Services
 				fileType = FileType.File;
 			}
 
-			Console.WriteLine($" \n 1) {{\n FileName : {filePath}, \n fileType : {fileType} \n}} \n");
-
 			#endregion
 
 			var node = new TreeNode
@@ -81,8 +82,6 @@ namespace Core.Services
 			};
 
 			_fileTreeRepository.AddNode(data.ParentId, node);
-
-			Console.WriteLine($" \n 2) {{\n Id: {node.Id} \n FileName : {node.FileName} \n fileType : {node.FileTreeType} \n Route : {node.Route} \n}} \n");
 
 			if (fileType == FileType.Folder)
 			{

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.VM;
 
 namespace UI
 {
@@ -23,6 +24,8 @@ namespace UI
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			DataContext = new ApplicationViewModel();
 		}
 	}
 }
