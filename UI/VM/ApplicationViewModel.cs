@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Helpers;
 
 namespace UI.VM
 {
@@ -64,8 +65,6 @@ namespace UI.VM
 		}
 
 		private IDictionaryScannerService _dictionaryScannerService;
-		private Task _scanTask;
-
 		private ObservableCollection<TreeViewNode> _treeNodes;
 		public ObservableCollection<TreeViewNode> TreeViewList
 		{
@@ -78,22 +77,16 @@ namespace UI.VM
 			}
 		}
 
-
-		private Core.Models.TreeNode _treeResult;
 		public Core.Models.TreeNode TreeResult
 		{
 			set
 			{
 				if (value != null)
 				{
-					_treeResult = value;
-
 					_treeNodes = new ObservableCollection<TreeViewNode>();
 					_treeNodes.Add(value.ToTreeViewNode());
 					OnPropertyChanged("TreeViewList");
 				}
-				
-				OnPropertyChanged("TreeResult");
 			}
 		}
 
@@ -115,9 +108,7 @@ namespace UI.VM
 					}
 				});
 			}
-		}
-
-		
+		}		
 
 		private RelayCommand _startSearch;
 		public RelayCommand StartSearch
@@ -128,7 +119,7 @@ namespace UI.VM
 				{
 					_dictionaryScannerService = new DictionaryScannerService();
 					
-					_scanTask = Task.Run(() =>
+					Task.Run(() =>
 					{
 						IsSearchEnabled = true;
 						_dictionaryScannerService.StartScan(FilePath);

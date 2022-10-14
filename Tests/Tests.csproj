@@ -16,4 +16,14 @@
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestFolders\test1\" />
+    <Folder Include="TestFolders\test2\test\" />
+    <Folder Include="TestFolders\test3\empty\" />
+  </ItemGroup>
+
 </Project>

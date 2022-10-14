@@ -32,6 +32,9 @@ namespace Core.Services
 
 		public void StartScan(string startDir)
 		{
+			if (!Directory.Exists(startDir))
+				throw new ArgumentException();
+
 			_threadPoolScanner.StartScanner();
 
 			var scanData = new FileScanData

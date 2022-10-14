@@ -18,6 +18,7 @@ namespace Core.Services
 		private Thread _queueHandler;
 		private readonly ConcurrentQueue<TaskInfo> _taskQueue;
 		private readonly CancellationTokenSource _tokenSource;
+		private object _lock = new object();
 
 		public bool IsFinished => (_taskQueue.IsEmpty && count == MaxThreads && !scannerStarted) || _tokenSource.Token.IsCancellationRequested;
 
@@ -58,7 +59,8 @@ namespace Core.Services
 					continue;
 
 				_semaphore.WaitOne();
-				count--;
+				lock (_lock)
+				{ count--; }
 				
 				_taskQueue.TryDequeue(out var taskInfo);
 
@@ -71,15 +73,12 @@ namespace Core.Services
 			try
 			{
 				data.Task(data.TaskData);
-
 			}
-			catch (Exception)
-			{
-				Console.WriteLine("Errrorooror");
-			}
+			catch { }
 			finally
 			{
-				count++;
+				lock (_lock)
+				{ count++; }
 				_semaphore.Release();
 			}
 		}

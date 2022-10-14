@@ -37,7 +37,7 @@ namespace Core.Services
 			if (node.Parent != null)
 				div = node.Parent.FileSize.Value;
 
-			node.PercentFileSize = (double)node.FileSize.Value / div * 100;
+			node.PercentFileSize = (double)node.FileSize.Value / div;
 
 			if (node.Childrens != null)
 				foreach (var child in node.Childrens)
